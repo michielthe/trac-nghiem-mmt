@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trắc nghiệm Mạng máy tính</title>
+<style>
+:root{--bg:#eef2f4;--card:#fff;--ink:#17262e;--mute:#5d6f78;--line:#d5dee2;--acc:#0e6b73;--accbg:#e1f0f1;--ok:#1f7a45;--okbg:#e4f4ea;--bad:#b23a2e;--badbg:#fbe9e6}
+:root[data-theme="dark"]{--bg:#10191d;--card:#18252b;--ink:#e7eff2;--mute:#9bb0b8;--line:#2d3f47;--acc:#4fc3cc;--accbg:#173a3e;--ok:#5fd18b;--okbg:#14301f;--bad:#ff8b7c;--badbg:#3a1c18}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10191d;--card:#18252b;--ink:#e7eff2;--mute:#9bb0b8;--line:#2d3f47;--acc:#4fc3cc;--accbg:#173a3e;--ok:#5fd18b;--okbg:#14301f;--bad:#ff8b7c;--badbg:#3a1c18}}
+*{box-sizing:border-box}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;min-height:100vh}
+main{max-width:760px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:1.7rem;margin:0 0 6px;letter-spacing:-.01em}
+.lead{color:var(--mute);margin:0 0 24px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.chs{display:grid;gap:12px}
+.ch{display:flex;align-items:center;gap:16px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;width:100%}
+.ch:hover{border-color:var(--acc)}
+.ch b{display:block;font-size:1.05rem}
+.ch span{color:var(--mute);font-size:.92rem}
+.ch .n{margin-left:auto;font-weight:600;color:var(--acc);white-space:nowrap;font-size:.92rem}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.link{background:none;border:0;color:var(--acc);padding:6px 0;font-weight:600}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--acc);transition:width .25s}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.nav button{width:32px;height:32px;border-radius:6px;border:1px solid var(--line);background:var(--card);font-size:.8rem;padding:0}
+.nav button.cur{border:2px solid var(--acc);font-weight:700}
+.nav button.ok{background:var(--okbg);color:var(--ok)}
+.nav button.bad{background:var(--badbg);color:var(--bad)}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px}
+.q h2{font-size:1.2rem;line-height:1.5;margin:0 0 18px}
+.opt{display:flex;gap:12px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.opt .k{flex:none;width:26px;height:26px;border-radius:50%;background:var(--accbg);color:var(--acc);font-weight:700;font-size:.85rem;display:grid;place-items:center}
+.opt:not(:disabled):hover{border-color:var(--acc)}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.opt.ok .k{background:var(--ok);color:#fff}
+.opt.bad .k{background:var(--bad);color:#fff}
+.exp{margin-top:6px;padding:14px 16px;border-left:4px solid var(--acc);background:var(--accbg);border-radius:0 8px 8px 0}
+.exp.ok{border-color:var(--ok)}.exp.bad{border-color:var(--bad)}
+.exp strong{display:block;margin-bottom:2px}
+.foot{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.btn{border:1.5px solid var(--acc);background:var(--card);color:var(--acc);border-radius:8px;padding:10px 20px;font-weight:600}
+.btn.p{background:var(--acc);color:var(--bg)}
+.btn:disabled{opacity:.35;cursor:default}
+.hint{color:var(--mute);font-size:.82rem;text-align:center;margin-top:16px}
+.score{font-size:3rem;font-weight:700;color:var(--acc);margin:6px 0}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+@media(max-width:520px){.q{padding:18px}.hint{display:none}}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.tg{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;font-weight:600;display:flex;align-items:center;gap:8px}
+.tg i{width:34px;height:20px;border-radius:10px;background:var(--line);position:relative;transition:background .2s}
+.tg i:after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--card);transition:left .2s}
+.tg.on{border-color:var(--acc);color:var(--acc)}
+.tg.on i{background:var(--acc)}.tg.on i:after{left:17px}
+.ch.sel{border-color:var(--acc);background:var(--accbg)}
+.go{margin-top:16px;width:100%;padding:14px}
+.tag{display:inline-block;font-size:.8rem;font-weight:600;color:var(--bad);background:var(--badbg);border-radius:6px;padding:2px 10px;margin-bottom:10px}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+// Mỗi câu: [câu hỏi, đáp án ĐÚNG, sai1, sai2, sai3, giải thích]
+const CH=[
+{t:"Chương 1 – Các khái niệm cơ bản",s:"Mạng, phân loại, độ trễ, chuyển mạch, đồ hình",q:[
+["Internet là gì?","Mạng của mạng, có khả năng truy cập toàn cầu","Một máy chủ rất lớn đặt tại Mỹ","Mạng LAN của một công ty lớn","Một giao thức truyền tập tin","Internet là mạng của các mạng, kết nối vô số mạng nhỏ lại và cho phép truy cập trên phạm vi toàn cầu."],
+["Loại mạng nào có tốc độ cao, ít lỗi, rẻ tiền và thuộc một tòa nhà/công ty?","LAN","MAN","WAN","Extranet","LAN có kích thước nhỏ, thuộc 1 tổ chức, nhanh, ít lỗi và rẻ. MAN và WAN chậm hơn, nhiều lỗi hơn, đắt hơn."],
+["WAN khác LAN ở điểm nào?","Phạm vi quốc gia/quốc tế, thuộc nhiều đơn vị","Phạm vi một phòng máy, thuộc một công ty","Chỉ dùng cáp quang","Chỉ dùng trong một thành phố","WAN kết hợp nhiều LAN/MAN, phạm vi quốc gia, châu lục, quốc tế; chậm, nhiều lỗi và chi phí cao hơn LAN, MAN."],
+["Viettel, FPT thuộc cấp ISP nào trong cấu trúc Internet?","Local ISP (cung cấp kết nối cho người dùng cuối)","Tier-1 ISP","Tier-2 ISP","Không thuộc ISP nào","Local ISP là nhà cung cấp kết nối cho người dùng cuối. Tier-1 là cấp quốc gia/quốc tế (AT&T, Sprint)."],
+["Mạng nào cho phép bên ngoài truy cập vào nhưng phải qua chứng thực?","Extranet","Intranet","Internet","LAN","Intranet chỉ nội bộ, Extranet cho bên ngoài vào có chứng thực, Internet cho mọi người truy cập."],
+["Mạng không dây được chia thành hai kiểu nào?","Infrastructure và Ad-hoc","Bus và Ring","LAN và WAN","Intranet và Extranet","Mạng không dây gồm kiểu Infrastructure (có thiết bị trung tâm) và Ad-hoc (các máy tự kết nối với nhau)."],
+["ARPANET ngày 21/11/1969 kết nối hai nơi nào đầu tiên?","ĐH California Los Angeles và Viện nghiên cứu Stanford","MIT và Harvard","Stanford và MIT","ĐH California và Bell Labs","Đây là kết nối đầu tiên của ARPANET. ARPANET đóng năm 1990, NSFNET đóng năm 1995."],
+["Ai là người phát minh công nghệ chuyển mạch gói?","Leonard Kleinrock","J.C.R. Licklider","Vinton Cerf","Robert Kahn","Kleinrock phát minh chuyển mạch gói. Licklider là người nêu ý tưởng đầu tiên về mạng máy tính."],
+["Kiểu truyền nào gửi từ 1 node đến tất cả các node trong một vùng mạng?","Broadcast","Unicast","Multicast","Anycast","Broadcast: 1 → tất cả. Unicast: 1 → 1. Multicast: 1 → một nhóm. Anycast: 1 → một node bất kỳ trong nhóm."],
+["Anycast khác Multicast thế nào?","Anycast gửi đến 1 node bất kỳ trong nhóm; Multicast gửi đến cả nhóm","Anycast gửi đến mọi node; Multicast gửi đến 1 node","Hai kiểu hoàn toàn giống nhau","Anycast chỉ dùng cho mạng không dây","Multicast: cả nhóm đều nhận. Anycast: chỉ một thành viên bất kỳ của nhóm nhận."],
+["Giao thức (protocol) là gì?","Các quy định, quy tắc để trao đổi dữ liệu giữa các đối tượng trên mạng","Một loại cáp mạng","Một thiết bị chuyển tiếp dữ liệu","Một phần mềm diệt virus","Giao thức quy định định dạng dữ liệu, thứ tự gửi nhận và hành động sau mỗi thông điệp. VD: HTTP, TCP, IP, PPP."],
+["Băng thông (bandwidth) và thông lượng (throughput) khác nhau thế nào?","Băng thông là mức lý tưởng; thông lượng là thực tế, thường nhỏ hơn","Băng thông là thực tế; thông lượng là lý thuyết","Hai khái niệm hoàn toàn giống nhau","Băng thông đo bằng giây, thông lượng đo bằng byte","Thông lượng bị ảnh hưởng bởi thiết bị liên mạng, topology, số user, máy của user và server nên nhỏ hơn băng thông."],
+["Công thức tính trễ do tốc độ truyền (Dtrans) là gì?","L / R (độ dài gói / băng thông)","d / c (chiều dài đường truyền / tốc độ lan truyền)","R / L","L × R","Dtrans = L/R là thời gian đẩy cả gói lên đường truyền. d/c là trễ lan truyền Dprop."],
+["Dprop = d/c thể hiện điều gì?","Thời gian để 1 bit đi từ nơi gửi đến nơi nhận","Thời gian gói chờ trong hàng đợi","Thời gian xử lý header ở router","Thời gian đẩy cả gói lên đường truyền","Dprop phụ thuộc khoảng cách và tốc độ lan truyền, không phụ thuộc kích thước gói."],
+["Trong 4 thành phần của độ trễ, thành phần nào thường rất nhỏ?","Dproc (xử lý tại nút)","Dqueue (hàng đợi)","Dtrans","Dprop","Dproc chỉ là kiểm lỗi bit và xác định cổng ra nên thường rất nhỏ. Dqueue phụ thuộc số gói đến trước."],
+["Gói tin 100 bytes, đường truyền 10 Mbps. Dtrans bằng bao nhiêu?","0,00008 s","0,0008 s","0,01 s","0,000008 s","L = 100×8 = 800 bit; R = 10×10^6 bps; Dtrans = 800 / 10^7 = 0,00008 s. Nhớ đổi byte sang bit."],
+["Đặc điểm của chuyển mạch mạch (circuit switching) là gì?","Chiếm tài nguyên suốt cuộc gọi, đảm bảo không nghẽn","Chia dữ liệu thành gói dùng chung tài nguyên","Không cần thiết lập đường đi trước","Dùng hiệu quả băng thông với dữ liệu rời rạc","Chuyển mạch mạch (VD: mạng điện thoại PSTN) đặt trước đường đi và chiếm tài nguyên, nên lãng phí nếu dữ liệu rời rạc."],
+["Nhược điểm của chuyển mạch gói là gì?","Có thể bị nghẽn và mỗi gói thêm header làm tăng kích thước dữ liệu","Phải đặt trước tài nguyên","Mỗi người dùng chiếm riêng một đường truyền","Chỉ phục vụ được một người dùng tại một thời điểm","Chuyển mạch gói cho nhiều người dùng đồng thời, dùng tài nguyên vừa đủ, nhưng có thể nghẽn và tốn thêm header."],
+["Đồ hình mạng nào hỏng toàn mạng khi node trung tâm hỏng?","Star (sao)","Bus","Ring","Mesh","Star nối các node qua một node trung tâm: dễ quản lý nhưng điểm trung tâm hỏng thì cả mạng hỏng."],
+["Đồ hình nào có độ tin cậy cao nhưng đắt vì tốn nhiều cáp?","Mesh (lưới)","Bus","Star","Ring","Mesh nối nhiều node với nhau nên dự phòng tốt, độ tin cậy cao, nhưng tốn cáp. Có mesh toàn phần và bán phần."],
+["Firewall kiểm soát luồng dữ liệu theo hướng nào?","Cả từ trong ra ngoài và từ ngoài vào trong","Chỉ từ ngoài vào trong","Chỉ từ trong ra ngoài","Không kiểm soát luồng dữ liệu","Firewall (phần mềm/phần cứng) áp dụng Access Policy để cho phép hoặc chặn dữ liệu theo cả hai chiều."],
+["Lệnh nào cho biết các chặng (router) trên đường đi đến đích?","tracert","ping","ipconfig","hosts","tracert hiển thị các chặng trên đường đi; ping đo thời gian phản hồi; pathping kết hợp cả hai."],
+["Tốc độ truyền 360.000 km/h tương đương bao nhiêu km/s? Dprop trên đường dài 100 km là bao lâu?","100 km/s; Dprop = 1 s","360 km/s; Dprop ≈ 0,28 s","1000 km/s; Dprop = 0,1 s","10 km/s; Dprop = 10 s","Đổi km/h sang km/s bằng cách chia cho 3600: 360.000/3600 = 100 km/s. Dprop = d/c = 100/100 = 1 s.",1],
+["Gói tin 1000 bytes gửi qua đường truyền 100 Mbps. Dtrans bằng bao nhiêu?","0,00008 s (80 µs)","0,0008 s","0,08 s","0,000008 s","L = 1000×8 = 8000 bit; R = 100×10^6 bps; Dtrans = 8000/10^8 = 8×10^-5 s = 80 µs. Hay sai: quên nhân 8 hoặc nhầm 1 Mbps = 10^6 bps.",1],
+["Với Dproc = 0,01 s, Dqueue = 0, Dtrans = 0,00008 s, Dprop = 1 s, thời gian gửi 1 gói xấp xỉ bao nhiêu?","≈ 1,01 s","≈ 1,00008 s","≈ 0,01008 s","≈ 0,11 s","D = Dproc + Dqueue + Dtrans + Dprop = 0,01 + 0 + 0,00008 + 1 ≈ 1,01 s. Dprop chiếm gần hết vì đường dài.",1],
+["Mạng mesh toàn phần gồm 6 máy cần tối thiểu bao nhiêu đường nối trực tiếp?","15","6","12","30","Mesh toàn phần: 2 thiết bị bất kỳ nối trực tiếp với nhau nên cần n(n−1)/2 = 6×5/2 = 15 đường. Đây là lý do mesh tốn nhiều cáp và đắt.",1]
+]},
+{t:"Chương 2 – Địa chỉ IP và chia subnet",s:"IPv4, subnet mask, đường mạng, broadcast, chia subnet",q:[
+["Địa chỉ IPv4 có kích thước bao nhiêu?","32 bit (4 byte, 4 octet)","16 bit","48 bit","128 bit","IPv4 gồm 4 octet, mỗi octet 8 bit, ngăn cách bằng dấu chấm. IPv6 mới là 128 bit, MAC là 48 bit."],
+["Địa chỉ IP và địa chỉ MAC lần lượt thuộc tầng nào trong mô hình OSI?","IP: tầng 3; MAC: tầng 2","IP: tầng 2; MAC: tầng 3","Cả hai thuộc tầng 3","IP: tầng 4; MAC: tầng 1","IP là địa chỉ logic (tầng Network). MAC là địa chỉ vật lý (tầng Data link)."],
+["Địa chỉ MAC gồm bao nhiêu byte, 3 byte đầu là gì?","6 byte; 3 byte đầu là OUI do IEEE cấp cho nhà sản xuất","4 byte; 3 byte đầu do người dùng đặt","6 byte; 3 byte đầu do người dùng đặt","8 byte; 3 byte đầu là mã quốc gia","3 byte đầu (OUI) do IEEE ấn định cho nhà sản xuất, 3 byte sau do nhà sản xuất ấn định cho từng card mạng (NIC)."],
+["Trong subnet mask, các bit thuộc NetID có giá trị nào?","Bằng 1","Bằng 0","Có thể là 0 hoặc 1","Luôn bằng 255","NetID bật 1, HostID là 0. Ví dụ /18 = 18 bit 1 liên tiếp = 255.255.192.0."],
+["/24 tương ứng subnet mask nào?","255.255.255.0","255.255.0.0","255.255.255.128","255.0.0.0","/24 có 24 bit 1: ba octet đầu bằng 255, octet cuối bằng 0."],
+["Cho 192.168.1.2/24. Địa chỉ đường mạng và broadcast là gì?","Net: 192.168.1.0; Broadcast: 192.168.1.255","Net: 192.168.0.0; Broadcast: 192.168.1.255","Net: 192.168.1.1; Broadcast: 192.168.1.254","Net: 192.168.1.0; Broadcast: 192.168.1.254","Net Addr: giữ NetID, xóa HostID về 0. Broadcast: giữ NetID, bật HostID lên 1."],
+["Số host hợp lệ trong một đường mạng được tính bằng công thức nào?","2^m − 2 (m là số bit HostID)","2^m","2^n − 2 (n là số bit NetID)","2^m + 2","Trừ 2 vì địa chỉ đường mạng (HostID toàn 0) và broadcast (HostID toàn 1) không gán cho host."],
+["172.29.1.1/16 có bao nhiêu host hợp lệ?","65.534","65.536","254","16","m = 32 − 16 = 16 nên số host = 2^16 − 2 = 65.534."],
+["192.168.1.2 và 192.168.1.200 (mask /24) có cùng đường mạng không?","Có, cùng đường mạng 192.168.1.0","Không, vì khác host","Không, vì khác lớp địa chỉ","Chỉ cùng khi dùng broadcast","Hai node có cùng địa chỉ đường mạng thì thuộc cùng một đường mạng. Ở đây cả hai đều có Net Addr 192.168.1.0."],
+["Địa chỉ 172.29.7.10 thuộc lớp nào, subnet mask mặc định là gì?","Lớp B, 255.255.0.0","Lớp A, 255.0.0.0","Lớp C, 255.255.255.0","Lớp B, 255.255.255.0","Octet đầu 128–191 là lớp B, mask mặc định /16. Net Addr là 172.29.0.0."],
+["Dải 127.0.0.0 – 127.255.255.255 là loại địa chỉ gì?","Địa chỉ loopback","Địa chỉ public","Địa chỉ broadcast","Địa chỉ multicast","Loopback dùng để máy tự kiểm tra chính nó, không đi ra mạng ngoài."],
+["Mục tiêu của việc chia subnet là gì?","Giảm số node mỗi mạng, tăng thông lượng/bảo mật, dễ quản trị, tránh lãng phí IP","Tăng số node trong mỗi mạng","Đổi địa chỉ MAC của máy","Làm địa chỉ IP dài hơn","Chia subnet giúp giảm node trong một mạng nên tăng thông lượng, dễ quản lý, bảo trì và đỡ lãng phí địa chỉ."],
+["Mượn n bit từ phần HostID để chia subnet thì được bao nhiêu subnet?","2^n","n^2","2n","2^n − 2","Quy tắc: mượn các bit đầu của HostID làm NetID, số subnet = 2^n."],
+["172.100.112.4/19 thuộc đường mạng nào?","172.100.96.0","172.100.112.0","172.100.64.0","172.100.0.0","Mask /19 = 255.255.224.0. Octet 3: 112 (0111 0000) AND 224 (1110 0000) = 0110 0000 = 96. Net = 172.100.96.0, broadcast = 172.100.127.255."],
+["Chia 192.168.1.0/24 thành 4 subnet bằng nhau, subnet mask mới là gì?","255.255.255.192","255.255.255.128","255.255.255.224","255.255.255.240","4 subnet = 2^2 nên mượn 2 bit: /26 = 255.255.255.192. Các đường mạng: .0, .64, .128, .192."],
+["Địa chỉ private dùng để làm gì?","Đánh địa chỉ cho các máy trong mạng LAN bên trong một tổ chức","Trao đổi trực tiếp trên Internet","Dùng cho truyền broadcast toàn Internet","Tự kiểm tra card mạng của chính máy","Địa chỉ private là địa chỉ ảo dùng trong LAN; địa chỉ public là địa chỉ thật dùng để trao đổi trên Internet."],
+["Địa chỉ MAC và địa chỉ IP do ai ấn định?","MAC do nhà sản xuất ấn định; IP do người dùng ấn định","MAC do người dùng ấn định; IP do nhà sản xuất ấn định","Cả hai do nhà sản xuất ấn định","Cả hai do IEEE ấn định cho từng máy","MAC là địa chỉ vật lý gắn với card mạng. IP là địa chỉ logic do người dùng/quản trị cấu hình."],
+["172.100.112.4/19 có bao nhiêu địa chỉ host hợp lệ?","8190","8192","16382","4094","/19 nên HostID có 32 − 19 = 13 bit. Số host = 2^13 − 2 = 8190. Dải host: 172.100.96.1 – 172.100.127.254.",1],
+["172.29.5.128/18 thuộc đường mạng nào?","172.29.0.0","172.29.5.0","172.29.5.128","172.29.64.0","Mask /18 = 255.255.192.0. Octet 3: 5 AND 192 = 0, octet 4 xóa về 0 nên Net = 172.29.0.0.",1],
+["Chia 172.29.0.0/16 thành 10 subnet. Cần mượn bao nhiêu bit và subnet mask mới là gì?","Mượn 4 bit; 255.255.240.0 (/20)","Mượn 3 bit; 255.255.224.0 (/19)","Mượn 5 bit; 255.255.248.0 (/21)","Mượn 10 bit; 255.255.255.192","2^3 = 8 < 10 ≤ 2^4 = 16 nên mượn 4 bit: /16 + 4 = /20 = 255.255.240.0. Mỗi subnet có 2^12 − 2 = 4094 host.",1],
+["Subnet cần 30 PC trong ví dụ 192.168.1.x dùng subnet mask nào là vừa đủ?","255.255.255.224 (/27)","255.255.255.192 (/26)","255.255.255.240 (/28)","255.255.255.128 (/25)","/27 có 5 bit HostID nên 2^5 − 2 = 30 host. /26 cho 62 host (dùng cho subnet 60 PC); /28 chỉ có 14 host.",1],
+["192.168.1.130/26 có địa chỉ broadcast là gì?","192.168.1.191","192.168.1.255","192.168.1.129","192.168.1.192","/26 chia octet cuối thành các khối 64: 0–63, 64–127, 128–191, 192–255. Địa chỉ .130 nằm trong khối 128–191 nên Net = .128 và broadcast = .191.",1]
+]},
+{t:"Chương 3 – Dịch vụ DNS",s:"Tên miền, resource record, truy vấn, forwarder, delegation",q:[
+["DNS có chức năng chính là gì?","Chuyển đổi giữa tên miền và địa chỉ IP","Cấp địa chỉ IP động cho máy","Mã hóa dữ liệu truyền","Chia sẻ tập tin giữa các máy","DNS (Domain Name System) ánh xạ tên miền ↔ địa chỉ IP, hoạt động ở tầng Application theo mô hình client – server."],
+["DNS dùng giao thức tầng Transport nào cho truy vấn, và cổng nào?","UDP, cổng 53","TCP, cổng 80","TCP, cổng 53","UDP, cổng 25","Truy vấn dùng UDP port 53. TCP dùng cho cập nhật thông tin (zone transfer)."],
+["FQDN là gì?","Tên miền đầy đủ: hostname + domain name + dấu chấm cuối","Chỉ phần hostname của máy","Địa chỉ IP của DNS server","Tên của một zone","Ví dụ FQDN: www.cntt.khtn.edu.vn. (có dấu chấm cuối thể hiện gốc root)."],
+["Resource record loại A dùng để làm gì?","Phân giải tên máy thành địa chỉ IP","Phân giải địa chỉ IP thành tên máy","Lưu tên phụ (alias) của máy","Chỉ ra server nhận mail","A: name = hostname, value = IP. PTR làm ngược lại (IP → tên máy)."],
+["Record CNAME lưu thông tin gì?","Tên phụ (alias) trỏ đến tên thật của máy","Địa chỉ IP của máy","Server nhận mail của miền","Thông tin của cả zone","CNAME: name là tên alias, value là tên thật. VD: mail → www.hcm.company.com.vn."],
+["Record PTR dùng để làm gì?","Phân giải địa chỉ IP thành tên máy","Phân giải tên máy thành địa chỉ IP","Chỉ ra name server của zone","Lưu tên phụ của máy","PTR dùng cho phân giải ngược, nằm trong nhánh in-addr.arpa."],
+["Record MX và NS lần lượt cho biết gì?","MX: server nhận mail của miền; NS: name server quản lý zone","MX: name server; NS: server nhận mail","MX: địa chỉ IP; NS: tên máy","Cả hai đều là tên phụ của máy","SOA chứa thông tin toàn bộ một zone, MX cho mail, NS cho các name server quản lý zone."],
+["Truy vấn đệ quy (recursive) khác truy vấn tuần tự (iterated) thế nào?","Đệ quy: server tự tìm và trả về kết quả cuối cùng; tuần tự: chỉ trả về NS gần nhất mà nó biết","Đệ quy: chỉ trả về NS gần nhất; tuần tự: trả về kết quả cuối","Hai loại hoàn toàn giống nhau","Đệ quy chỉ dùng TCP, tuần tự chỉ dùng UDP","Iterated: nói những gì biết. Recursive: tìm câu trả lời cho bạn và trả về thông tin cuối cùng."],
+["Authoritative DNS server là server nào?","Server quản lý tên miền đang phân giải và đưa ra câu trả lời cuối cùng","Server chỉ lưu cache","Server root của Internet","Server của ISP","Non-authoritative không quản lý tên miền, có câu trả lời nhờ caching hoặc forwarder."],
+["Lợi ích của caching trong DNS là gì?","Giảm thời gian truy vấn và giảm lưu lượng mạng","Tăng độ trễ nhưng chính xác hơn","Cho phép đổi địa chỉ IP nhanh hơn","Tăng số lượng truy vấn đến root","Kết quả đã truy vấn được lưu tạm trong cache kèm TTL nên lần sau trả lời ngay."],
+["Để tìm tên miền từ 130.233.154.148, DNS truy vấn tên nào?","148.154.233.130.in-addr.arpa","130.233.154.148.com","in-addr.arpa.148.154.233.130","148.154.233.130.vn","Phân giải ngược dùng nhánh in-addr.arpa với các octet của IP viết theo thứ tự đảo ngược."],
+["DNS forwarder được dùng để làm gì?","Chuyển các truy vấn ngoài zone cho DNS server khác (VD: của ISP) xử lý, giảm tải cho server nội bộ","Lưu trữ toàn bộ record của Internet","Mã hóa truy vấn DNS","Cấp phát địa chỉ IP cho client","Không có forwarder, DNS server phải tự liên hệ nhiều server nên tốn xử lý và băng thông. Có 2 loại: standard và conditional."],
+["Mục đích của DNS delegation (ủy thác) là gì?","Giao quyền quản lý subdomain cho DNS server khác (VD: chi nhánh Hà Nội) để giảm độ trễ","Sao lưu zone sang server khác","Chặn truy vấn từ bên ngoài","Đổi tên miền của công ty","Nếu không ủy thác, truy vấn tên miền Hà Nội vẫn phải về chi nhánh HCM nên trễ cao."],
+["Zone trong DNS là gì?","Một vùng domain tương ứng với phạm vi do một DNS server quản lý","Tập tất cả tên miền trên Internet","Một địa chỉ IP của DNS server","Một loại resource record","Name space là tập các tên miền; domain là một nhánh trong name space; zone là vùng domain tương ứng với “biên” quản lý trong DNS."],
+["DNS có những loại zone nào?","Primary, Secondary và Stub","Root, TLD và Local","A, CNAME và PTR","Iterated và Recursive","Primary giữ bản gốc, Secondary là bản sao chép, Stub chỉ chứa thông tin NS của zone khác."],
+["Ban đầu thông tin tên miền được lưu ở đâu, ngày nay thì sao?","Ban đầu là file hosts.txt; ngày nay là CSDL phân tán và phân cấp (Name Server)","Ban đầu là Name Server; ngày nay là file hosts.txt","Luôn là một máy chủ duy nhất","Lưu trên từng router","File hosts.txt không thể mở rộng được khi Internet lớn dần nên chuyển sang CSDL phân tán, phân cấp."],
+["Trong cấu hình company.com.vn, bản ghi “mail” của subdomain hcm là loại gì và trỏ đến đâu?","CNAME, trỏ đến www.hcm.company.com.vn","A, trỏ đến 172.29.100.2","MX, trỏ đến 172.29.100.3","PTR, trỏ đến dc.hcm.company.com.vn","mail chỉ là tên phụ của máy www nên dùng CNAME, không có địa chỉ IP riêng. Các host ftp, www, dc dùng bản ghi A.",1],
+["Theo cấu hình ví dụ, www.hanoi.company.com.vn cuối cùng phân giải ra địa chỉ IP nào?","172.30.10.3","172.29.100.4","172.29.100.3","172.29.100.5","www ở Hà Nội là CNAME → ftp.hanoi.company.com.vn, mà ftp.hanoi có bản ghi A là 172.30.10.3. Phân giải CNAME rồi mới ra IP.",1],
+["Khi phân giải gaia.cs.umass.edu theo kiểu tuần tự (iterated), local DNS server lần lượt hỏi các server nào?","Root → TLD (.edu) → authoritative (dns.cs.umass.edu)","Authoritative → TLD → root","TLD → root → authoritative","Chỉ hỏi duy nhất root DNS server","Root chỉ cho biết TLD server, TLD chỉ cho biết authoritative server, authoritative server mới trả về IP cuối cùng. Local DNS server đi hỏi lần lượt từng bước.",1],
+["Conditional forwarder khác standard forwarder ở điểm nào?","Chỉ chuyển các truy vấn thuộc tên miền chỉ định (VD: .vn) cho forwarder; các tên miền khác tự phân giải","Chuyển mọi truy vấn của client cho root DNS server","Chỉ chuyển truy vấn bằng TCP","Dùng để ủy thác quyền quản lý một subdomain","Ví dụ: truy vấn tuoitre.vn chuyển cho DNS server ISP, còn www.yahoo.com vẫn tự phân giải từ root. Delegation là việc khác: giao quyền quản lý subdomain.",1]
+]},
+{t:"Chương 4 – Mô hình OSI và TCP/IP",s:"7 tầng OSI, 4 tầng TCP/IP, đóng gói dữ liệu",q:[
+["Mô hình OSI do tổ chức nào đề xuất?","ISO","IEEE","ITU-T","ANSI","ISO đề xuất từ 1977 và công bố lần đầu năm 1984. OSI là khung sườn mô tả cách thông tin di chuyển trên mạng."],
+["Mô hình OSI có bao nhiêu tầng?","7","4","5","6","Từ trên xuống: Application, Presentation, Session, Transport, Network, Data link, Physical."],
+["Tầng thứ 3 tính từ dưới lên của OSI là tầng nào?","Network","Transport","Data link","Session","Thứ tự từ dưới: 1 Physical, 2 Data link, 3 Network, 4 Transport, 5 Session, 6 Presentation, 7 Application."],
+["Tầng Transport chịu trách nhiệm truyền dữ liệu như thế nào?","End-to-end (đầu cuối đến đầu cuối)","Host-to-host","Link-to-link","Truyền bit nhị phân","Transport: end-to-end; Network: host-host; Data link: link-link; Physical: bit nhị phân."],
+["Tầng nào của OSI lo việc truyền dữ liệu giữa hai host (host-host)?","Network","Transport","Data link","Physical","Tầng Network xác định đường đi và truyền dữ liệu giữa các host (dùng địa chỉ IP)."],
+["Tầng Presentation làm nhiệm vụ gì?","Quy định cách biểu diễn dữ liệu","Quản lý các phiên của ứng dụng","Cung cấp các dịch vụ mạng cho người dùng","Truyền các bit trên đường truyền","Application: dịch vụ mạng; Presentation: biểu diễn dữ liệu; Session: quản lý phiên."],
+["Tầng Session làm nhiệm vụ gì?","Quản lý các phiên của ứng dụng","Biểu diễn dữ liệu","Truyền dữ liệu end-to-end","Truyền dữ liệu link-link","Session thiết lập, duy trì và kết thúc các phiên làm việc giữa các ứng dụng."],
+["Mô hình TCP/IP có bao nhiêu tầng (theo bài giảng)?","4: Application, Transport, Internet, Host to Network","7 tầng như OSI","3 tầng","5 tầng","TCP/IP gộp 3 tầng trên của OSI thành Application, và gộp Data link + Physical thành Host to Network."],
+["Ba tầng Application, Presentation, Session của OSI tương ứng với tầng nào của TCP/IP?","Application","Transport","Internet","Host to Network","Tầng Application của TCP/IP gồm chức năng của cả ba tầng trên cùng trong OSI."],
+["Tầng Internet của TCP/IP tương ứng với tầng nào trong OSI?","Network","Transport","Data link","Application","Internet ↔ Network; Transport ↔ Transport; Host to Network ↔ Data link + Physical."],
+["Đóng gói dữ liệu (encapsulation) là gì?","Thêm thông tin của giao thức (header) vào dữ liệu trước khi chuyển đi","Mã hóa dữ liệu bằng khóa bí mật","Nén dữ liệu để gửi nhanh hơn","Chia mạng thành nhiều subnet","Mỗi tầng thêm header của mình. Bên nhận thực hiện quá trình ngược lại gọi là phân rã."],
+["PDU ở tầng Transport, Network, Data link lần lượt gọi là gì?","Segment, Packet, Frame","Packet, Segment, Frame","Frame, Packet, Segment","Bit, Frame, Packet","Transport: segment (có TCP header). Network: packet/datagram (IP header). Data link: frame. Physical: bits."],
+["Ưu điểm của việc chia mạng thành các tầng là gì?","Mỗi tầng có chức năng riêng, giảm độ phức tạp, dễ quản lý và mở rộng","Dữ liệu luôn truyền nhanh hơn","Không cần dùng giao thức","Mọi tầng dùng chung một chức năng","Tầng N dùng dịch vụ của tầng N−1 và cung cấp dịch vụ cho tầng N+1, nên dễ phát triển, thay thế từng phần."],
+["TCP/IP do ai định nghĩa và vào năm nào?","Cerf và Kahn, năm 1974","ISO, năm 1977","Cerf và Kahn, năm 1984","IEEE, năm 1969","TCP/IP đặc tả chồng giao thức do Cerf và Kahn định nghĩa năm 1974. OSI do ISO đề xuất 1977, công bố 1984."],
+["Các tầng Application, Presentation, Session của OSI thuộc nhóm nào?","Upper layers (các tầng trên)","Lower layers (các tầng dưới)","Data flow layers","Nhóm tầng vật lý","Upper layers: Application, Presentation, Session. Các tầng Transport, Network, Data link, Physical thuộc nhóm Data flow/Lower layers."],
+["Tầng Physical truyền dữ liệu dưới dạng nào?","Bit nhị phân (0 và 1)","Segment","Packet","Frame","Physical truyền các bit nhị phân qua đường truyền. Segment, packet, frame là PDU của các tầng trên."],
+["Trong một frame sau khi đóng gói, thứ tự từ ngoài vào trong là gì?","Header tầng link → header tầng network → header tầng transport → dữ liệu ứng dụng","Dữ liệu ứng dụng → header transport → header network → header link","Header network → header link → header transport → dữ liệu","Header transport → header network → header link → dữ liệu","Mỗi tầng thêm header ở phía trước dữ liệu của tầng trên nên header của tầng thấp nhất nằm ngoài cùng (Hl Hn Ht M). Frame còn có FCS ở cuối.",1],
+["Theo hình minh họa, switch xử lý dữ liệu đến tầng nào còn router xử lý đến tầng nào?","Switch: tầng Link; Router: tầng Network","Switch: tầng Network; Router: tầng Transport","Switch: tầng Physical; Router: tầng Link","Cả hai đều xử lý đến tầng Application","Switch chỉ có tầng link và physical (dùng MAC). Router có thêm tầng network (dùng IP) để chọn đường. Chỉ máy đầu cuối mới đi đủ lên tầng cao.",1],
+["Trong mô hình phân tầng, tầng N cung cấp dịch vụ cho tầng nào và sử dụng dịch vụ của tầng nào?","Cung cấp cho tầng N+1; sử dụng dịch vụ của tầng N−1","Cung cấp cho tầng N−1; sử dụng dịch vụ của tầng N+1","Cung cấp và sử dụng dịch vụ của cùng tầng N","Chỉ cung cấp dịch vụ cho tầng Application","Ví dụ: tầng Transport dùng dịch vụ của tầng Network (bên dưới) và cung cấp dịch vụ cho tầng Application (bên trên)."],
+["Trong mô hình phân tầng, tầng N của máy gửi trao đổi với tầng nào theo giao thức riêng của nó?","Tầng N của máy nhận","Tầng N+1 của máy nhận","Tầng N−1 của máy gửi","Tầng Physical của máy nhận","Mỗi tầng giao tiếp với tầng cùng cấp bên kia theo giao thức của tầng đó, còn dữ liệu thực tế đi xuống qua các tầng dưới rồi lên lại ở máy nhận.",1]
+]}
+];
+
+const app=document.getElementById('app');
+let ch,qs,ans,idx;
+const L='ABCD';
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+let cfg={shuf:false,all:false};
+const total=ids=>ids.reduce((n,i)=>n+CH[i].q.length,0);
+const hardN=ids=>ids.reduce((n,i)=>n+CH[i].q.filter(r=>r[6]).length,0);
+
+function home(){
+  const all=CH.map((_,i)=>i);
+  app.innerHTML=`<h1>Trắc nghiệm Mạng máy tính</h1><p class="lead">Chọn một chương để ôn. Đáp án được xáo trộn mỗi lần làm, và giải thích luôn hiện sau khi bạn chọn. Câu có nhãn “Câu nâng cao” là phần tính toán hoặc chi tiết ít người để ý.</p>
+  <div class="tools">
+    <button class="tg ${cfg.shuf?'on':''}" id="tShuf" aria-pressed="${cfg.shuf}"><i></i>Xáo trộn thứ tự câu hỏi</button>
+    <button class="tg ${cfg.all?'on':''}" id="tAll" aria-pressed="${cfg.all}"><i></i>Làm tất cả các chương</button>
+  </div>
+  <div class="chs">${CH.map((c,i)=>`<button class="ch ${cfg.all?'sel':''}" data-i="${i}"><div><b>${c.t}</b><span>${c.s}</span></div><span class="n">${c.q.length} câu · ${hardN([i])} nâng cao</span></button>`).join('')}</div>
+  ${cfg.all?`<button class="btn p go" id="goAll">Bắt đầu làm tất cả (${total(all)} câu)</button>`:''}`;
+  document.getElementById('tShuf').onclick=()=>{cfg.shuf=!cfg.shuf;home()};
+  document.getElementById('tAll').onclick=()=>{cfg.all=!cfg.all;home()};
+  app.querySelectorAll('.ch').forEach(b=>b.onclick=()=>begin(cfg.all?all:[+b.dataset.i]));
+  const g=document.getElementById('goAll');if(g)g.onclick=()=>begin(all);
+}
+
+function begin(ids){
+  ch=ids.length>1?{t:'Tất cả các chương',ids}:{t:CH[ids[0]].t,ids};
+  let rows=ids.flatMap(i=>CH[i].q);
+  if(cfg.shuf)rows=shuf(rows);
+  qs=rows.map(r=>({q:r[0],exp:r[5],h:r[6],o:shuf([{t:r[1],ok:1},{t:r[2]},{t:r[3]},{t:r[4]}])}));
+  ans=qs.map(()=>null);idx=0;quiz();
+}
+
+function quiz(){
+  const q=qs[idx],a=ans[idx],done=a!==null;
+  const nDone=ans.filter(x=>x!==null).length;
+  app.innerHTML=`
+  <div class="top"><button class="link" id="back">← Chọn chương</button><span style="color:var(--mute);font-size:.9rem">Câu ${idx+1}/${qs.length}</span></div>
+  <div class="bar"><i style="width:${nDone/qs.length*100}%"></i></div>
+  <div class="nav">${qs.map((_,i)=>`<button data-i="${i}" class="${i===idx?'cur ':''}${ans[i]===null?'':qs[i].o[ans[i]].ok?'ok':'bad'}" aria-label="Câu ${i+1}">${i+1}</button>`).join('')}</div>
+  <section class="q">${q.h?'<span class="tag">Câu nâng cao</span>':''}<h2>${esc(q.q)}</h2>
+  ${q.o.map((o,i)=>`<button class="opt ${done?(o.ok?'ok':i===a?'bad':''):''}" data-i="${i}" ${done?'disabled':''}><span class="k">${L[i]}</span><span>${esc(o.t)}</span></button>`).join('')}
+  ${done?`<div class="exp ${q.o[a].ok?'ok':'bad'}"><strong>${q.o[a].ok?'Chính xác!':'Chưa đúng. Đáp án đúng là '+L[q.o.findIndex(o=>o.ok)]+'.'}</strong>${esc(q.exp)}</div>`:''}
+  </section>
+  <div class="foot"><button class="btn" id="prev" ${idx===0?'disabled':''}>← Câu trước</button>
+  ${idx===qs.length-1?`<button class="btn p" id="fin">Xem kết quả</button>`:`<button class="btn p" id="next">Câu tiếp →</button>`}</div>
+  <p class="hint">Dùng phím ← → để chuyển câu, phím 1–4 để chọn đáp án</p>`;
+  document.getElementById('back').onclick=home;
+  app.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>go(+b.dataset.i));
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+  const p=document.getElementById('prev');p.onclick=()=>go(idx-1);
+  const n=document.getElementById('next');if(n)n.onclick=()=>go(idx+1);
+  const f=document.getElementById('fin');if(f)f.onclick=result;
+}
+function go(i){if(i>=0&&i<qs.length){idx=i;quiz();window.scrollTo(0,0)}}
+function pick(i){if(ans[idx]===null){ans[idx]=i;quiz()}}
+
+function result(){
+  const ok=qs.filter((q,i)=>ans[i]!==null&&q.o[ans[i]].ok).length;
+  const skip=ans.filter(x=>x===null).length;
+  app.innerHTML=`<h1>Kết quả</h1><p class="lead">${ch.t}</p>
+  <div class="score">${ok}/${qs.length}</div>
+  <p>Đúng ${ok} câu, sai ${qs.length-ok-skip} câu${skip?`, chưa làm ${skip} câu`:''}.</p>
+  <div class="row"><button class="btn p" id="again">Làm lại (đáp án xáo trộn)</button>${skip||ok<qs.length?'<button class="btn" id="rev">Xem lại bài</button>':''}<button class="btn" id="home">Chọn chương khác</button></div>`;
+  document.getElementById('again').onclick=()=>begin(ch.ids);
+  document.getElementById('home').onclick=home;
+  const r=document.getElementById('rev');if(r)r.onclick=()=>{const w=ans.findIndex((a,i)=>a===null||!qs[i].o[a].ok);go(w<0?0:w)};
+}
+
+document.addEventListener('keydown',e=>{
+  if(!qs||!document.querySelector('.q'))return;
+  if(e.key==='ArrowRight')go(idx+1);
+  else if(e.key==='ArrowLeft')go(idx-1);
+  else if('1234'.includes(e.key)&&e.key.length===1)pick(+e.key-1);
+});
+home();
+</script>
+</body>
+</html>
